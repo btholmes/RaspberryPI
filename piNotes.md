@@ -8,15 +8,43 @@
 
     sudo ifconfig (to get IP address)  
     hostname -I (better solution) 
-    ssh pi@192.168.1.149 (My password is not the default) 
+    ssh pi@192.168.1.149 
+
     
+
+  * Open and edit files 
+        vi file.txt  
+        cat file.txt (to see the change on terminal)  
+
+  * Open a pic from raspberry pi command 
+        sudo apt-get update  
+        sudo apt-get install feh
+        feh pic.jpg 
+        (type x to exit pic)  
+  * Take a screenshot of the computer 
+        scrot  
+  * Open a pic over the ssh 
+        Install Iterm2 (iterm2.com)  
+        click Iterm2 at top left by apple logo, and click "install shell integration"  
+        Open iTerm from applications 
+        imgcat file.jpg 
+
+  * Open any file for edit 
+        sudo /Applications/TextWrangler.app/Contents/MacOS/TextWrangler &
+        open -a "TextWrangler" /etc/sshd_config
+
+        
+
     
+ * Edit file on remote computer through ssh 
+        sshfs user@domain:/remote/directory/ /local/directory/
 
 
  * Set up PyCamera  
   * Make sure there is internet connectivity  
     sudo apt-get update  
     sudo apt-get upgrade  
+    sudo rpi-update  
     sudo raspi-config  
         select enable camera on interface  
     raspistill -o camera.jpg  
