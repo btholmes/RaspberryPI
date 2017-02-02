@@ -201,6 +201,9 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
     python test_video.py 
 
 
+## Set up RaspberryPI WebCam server 
+    
+
 
 
 # Note
