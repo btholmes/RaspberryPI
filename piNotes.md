@@ -6,6 +6,13 @@
     then navigate to ssh,  
     press Enter and select Enable or disable ssh server.  
 
+    sudo ifconfig (to get IP address)  
+    hostname -I (better solution) 
+    ssh pi@192.168.1.149 (My password is not the default) 
+    
+    
+
+
  * Set up PyCamera  
   * Make sure there is internet connectivity  
     sudo apt-get update  
@@ -205,7 +212,7 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE
     sudo apt-get update  
     sudo apt-get upgrade  
 
-    **Remove packages that can conflict with newer versions**  
+    **Remove packages that can conflict with newer versions**  l
     sudo apt-get remove libavcodec-extra-56 libavformat56 libavresample2 libavutil54  
 
     wget https://github.com/ccrisan/motioneye/wiki/precompiled/ffmpeg_3.1.1-1_armhf.deb  
