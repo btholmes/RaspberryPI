@@ -201,8 +201,85 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
     python test_video.py 
 
 
-## Set up RaspberryPI WebCam server 
-    
+## Set up RaspberryPI WebCam server (Regular webcam, and then PiCamera extra steps at bottom)  
+    sudo apt-get update  
+    sudo apt-get upgrade  
+
+    **Remove packages that can conflict with newer versions**  
+    sudo apt-get remove libavcodec-extra-56 libavformat56 libavresample2 libavutil54  
+
+    wget https://github.com/ccrisan/motioneye/wiki/precompiled/ffmpeg_3.1.1-1_armhf.deb  
+    sudo dpkg -i ffmpeg_3.1.1-1_armhf.deb  
+
+    sudo apt-get install curl libssl-dev libcurl4-openssl-dev libjpeg-dev libx264-142 libavcodec56 libavformat56 libmysqlclient18 libswscale3 libpq5  
+
+    wget https://github.com/Motion-Project/motion/releases/download/release-4.0.1/pi_jessie_motion_4.0.1-1_armhf.deb  
+    sudo dpkg -i pi_jessie_motion_4.0.1-1_armhf.deb  
+
+    **Makes changes to motion.conf file**  
+    sudo nano /etc/motion/motion.conf  
+
+    Find the following lines and change them to the following.  
+    daemon on  
+    stream_localhost off  
+    Note: Change the following two lines from on to off if you’re having issues with the stream freezing whenever motion occurs.  
+    output_pictures off  
+    ffmpeg_output_movies off  
+    Optional (Don’t include the text in brackets)  
+    stream_maxrate 100 (This will allow for real-time streaming but requires more bandwidth & resources)  
+    framerate 100 (This will allow for 100 frames to be captured per second allowing for smoother video)  
+    width 640 (This changes the width of the image displayed)  
+    height 480 (This changes the height of the image displayed)  
+
+    **Now edit the motion file**  
+    sudo nano /etc/default/motion  
+
+    Find the following line and change it to the following:  
+    start_motion_daemon=yes  
+    Once you’re done simply save and exit by pressing ctrl+x then y.  
+
+    With the camera connected run :  
+        sudo service motion start
+        sudo service motion stop (to stop service)  
+        **Now can see the webstream at IP address of your PI** 
+            192.168.1.103:8081
+        *If web page isn't loading try*  
+            sudo service motion restart  
+
+
+ * Extra steps for the PiCamera  
+    Make sure camera is enables  
+        sudo raspi-config  
+    Open modules file  
+        sudo nano /etc/modules  
+    Enter this at bottom of file if not there  
+        bcm2835-v4l2  (save and exit with ctrl x then y)  
+    sudo reboot
+
+    Now check it out at 192.168.1.103:8081  
+
+## Enable external Access to PiCamera stream 
+
+    In order to enable external access to the Raspberry Pi Webcam Server we will need to change some settings in the router. However, all routers are designed differently so you may need to look up instructions for your brand of router. Please note, opening ports to the internet comes with a security risk.  
+    If you need a more indepth guide then be sure to take a look at my guide on how to setup Raspberry Pi port forwarding and dynamic DNS.  
+    This is what I did on mine in order to get it to work. My router is an AC1750 TP-Link Router.  
+    Go to the Router admin page (This will typically be 192.168.1.1 or 192.168.254)  
+    Enter the username and password. Default typically is admin & admin.  
+    Once in go to forwarding->Virtual Server and then click on add new  
+    In here enter:  
+    **Service port:** In this case 48461  
+    **IP Address:** 192.168.1.103 (Address of your Pi)  
+    **Internal Port:** We want this to be the same as the webcam server so make it 8081  
+    **Protocol:** All  
+    **Status:** Enabled  
+    These settings will route all traffic destined for port 48461 to the webcam server located at the IP address and port you provided. (192.168.1.103:8081)  
+    You should now be able to connect to the Raspberry Pi webcam stream outside your network. You may need to restart the router for changes to take effect.  
+    Router Port Fowarding  
+    If you’re unable to connect outside your local network then you can try the following:  
+    Check your router settings and confirm they are correct.  
+    Check your IP hasn’t changed (Some IPs will provide you with a dynamic IP rather than a static IP) You can  setup something called dynamic dns to counter this you can find out more information via the link mentioned above.  
+    Restart the router.  
+
 
 
 
