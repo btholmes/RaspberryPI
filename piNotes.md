@@ -28,6 +28,11 @@
         click Iterm2 at top left by apple logo, and click "install shell integration"  
         Open iTerm from applications 
         imgcat file.jpg 
+        **Note**
+            There exists a sshd_config file in ~/../../etc folder  
+            It has an X11 forwarding set to yes or no  
+            Can try setting to yes, and loggin in with ssh -X name@host
+
 
   * Open any file for edit 
         sudo /Applications/TextWrangler.app/Contents/MacOS/TextWrangler &
