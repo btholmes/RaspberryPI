@@ -24,6 +24,7 @@
   * Take a screenshot of the computer 
         scrot  
   * Open a pic over the ssh 
+        **When camera doesn't register.. sudo reboot over and over** '
         Install Iterm2 (iterm2.com)  
         click Iterm2 at top left by apple logo, and click "install shell integration"  
         Open iTerm from applications 
@@ -45,7 +46,7 @@
         sshfs user@domain:/remote/directory/ /local/directory/
 
 
- * Set up PyCamera  
+## Set up PyCamera  
   * Make sure there is internet connectivity  
     sudo apt-get update  
     sudo apt-get upgrade  
@@ -54,7 +55,7 @@
         select enable camera on interface  
     raspistill -o camera.jpg  
     
- * Set up Python and OpenCV on raspberryPi 3  
+## Set up Python and OpenCV on raspberryPi 3  
     sudo raspi-config  
         select Expand filesystem  
     sudo reboot  
@@ -260,11 +261,12 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE
     sudo nano /etc/motion/motion.conf  
 
     Find the following lines and change them to the following.  
-    daemon on  
-    stream_localhost off  
+//    daemon on  
+
+ //   stream_localhost off  
     Note: Change the following two lines from on to off if you’re having issues with the stream freezing whenever motion occurs.  
-    output_pictures off  
-    ffmpeg_output_movies off  
+//    output_pictures off
+//    ffmpeg_output_movies off  
     Optional (Don’t include the text in brackets)  
     stream_maxrate 100 (This will allow for real-time streaming but requires more bandwidth & resources)  
     framerate 100 (This will allow for 100 frames to be captured per second allowing for smoother video)  
@@ -321,6 +323,37 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE
     Restart the router.  
 
 
+## Set up a Regular USB webcam 
+ * Connect device and make sure it registers with 
+    
+        lsusb
+
+ * Install some stuff
+
+        sudo apt-get install fswebcam
+ 
+ * Capture a pic 
+
+        fswebcam --no-banner -r 640x480 image.jpg   (640x480 is the resolution)
+        fswebcam pic.jpg
+
+ * Error 
+
+    Trying source module v4l2...
+    /dev/video0 opened.
+    No input was specified, using the first.
+    Error selecting input 0
+    VIDIOC_S_INPUT: Device or resource busy
+
+ * Fixed By
+
+    sudo apt-get remove motion (Thinking motion was causing the problem?)
+
+
+## View picture on terminal 
+
+        sudo apt-get install links2
+        2: links2 -g <picture.jpg> 
 
 
 # Note
